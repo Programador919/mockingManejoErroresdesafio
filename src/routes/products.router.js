@@ -14,14 +14,7 @@ router.get("/", async (req, res) => {
     let result = await productMongo.get()
     res.send({ status: "success", payload: result })
 })
-//------------------Info Prueba CUstom Error--------------//
-// http://localhost:8080/products
-// {
-//     "image": "imagen1.jpg",
-//     "stock": 999,
-//     "category": "Electrónicos",
-//     "availability": "in_stock"
-// }
+
 //--------------------------------------------------------//
 
 router.post("/", async (req, res) => {
@@ -30,7 +23,7 @@ router.post("/", async (req, res) => {
     if (!description || !price) {
         try {
             // Some code that might throw an error
-            throw CustomError.createError({
+            throw customError.createError({
                 name: 'Error en Creacion de Producto',
                 cause: generateProductErrorInfo(product),
                 message: 'Error al intentar crear el Producto',

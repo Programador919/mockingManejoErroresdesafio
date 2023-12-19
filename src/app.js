@@ -21,6 +21,8 @@ import {Server} from "socket.io"
 import { createHash, isValidPassword } from './utils.js'
 import compression from 'express-compression'
 import { nanoid } from 'nanoid'
+//import errorHandler from "../src/middlewaresErrors/indexErrors.js";
+
 const app = express()
 const port = 8080
 
@@ -112,6 +114,7 @@ socketServer.on("connection", socket => {
 app.use("/carts", cartsRouter)
 app.use("/products", productsRouter)
 app.use("/users", usersRouter)
+//app.use(errorHandler);
 app.use("/tickets", ticketsRouter)
 
 //Prueba Front
@@ -187,6 +190,7 @@ function getRandomNumber(min, max) {
 app.get("/mockingproducts", async(req,res)=>{
 
     const products = [];
+    console.log(products.length);
 
     for (let i = 0; i < 100; i++) {
         const product = {

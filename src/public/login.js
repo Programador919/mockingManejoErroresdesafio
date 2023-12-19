@@ -1,3 +1,4 @@
+import { LoginError } from `../servicesErrors/customError.js`
 
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
         e.preventDefault()
@@ -12,7 +13,8 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
             },
           });
           
-          if (response.ok) {
+          try {
+            if (response.ok) {
             const data = await response.json();
             localStorage.setItem("token", data.token);        
             if (data.token && data.user.rol === 'admin') 
@@ -23,7 +25,17 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
               //Acceso Usuario
                 window.location.href = '/current';
             }
-          } else {
-            console.error("Error en el inicio de sesión");
+      
+          }
+          } catch (error) {
+            if (error instanceof LoginError) {
+              // Manejar el error de inicio de sesión específico
+              console.error(`Error de inicio de sesión: ${error.message}`);
+              console.error(`Código de estado HTTP: ${error.statusCode}`);
+            }else {
+                // Manejar otros errores
+                console.error(`Error general: ${error.message}`);
+            }
+            console.error("Error en el inicio de sesión"); 
           }
     })

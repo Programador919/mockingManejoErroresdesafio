@@ -1,3 +1,5 @@
+import { RegisterError } from `../servicesErrors/customError.js`
+
 document.getElementById('registerForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -36,8 +38,19 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
         } else {
             console.error('Error al enviar el mensaje. Estado:', response.status, 'Texto:', response.statusText);
 
+            if (errorEnElRegistro) {
+                throw new RegisterError('Error durante el registro');
+            }
         }
     } catch (error) {
         console.error('Error de red:', error);
+    }
+    if (error instanceof RegisterError) {
+        // Manejar el error de registro específico
+        console.error(`Error de registro: ${error.message}`);
+        console.error(`Código de estado HTTP: ${error.statusCode}`);
+    } else {
+        // Manejar otros errores
+        console.error(`Error general: ${error.message}`);
     }
 });
